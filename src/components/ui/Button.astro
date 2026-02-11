@@ -1,0 +1,52 @@
+---
+interface Props {
+  href?: string;
+  variant?: "primary" | "secondary" | "accent" | "ghost" | "link" | "outline";
+  size?: "lg" | "md" | "sm" | "xs";
+  wide?: boolean;
+  class?: string;
+  [key: string]: any;
+}
+
+const {
+  href,
+  variant = "primary",
+  size,
+  wide = false,
+  class: className,
+  ...rest
+} = Astro.props;
+
+// Map variants to daisyUI classes
+const variantClasses = {
+  primary: "btn-primary",
+  secondary: "btn-secondary",
+  accent: "btn-accent",
+  ghost: "btn-ghost",
+  link: "btn-link text-white no-underline hover:text-white/80",
+  outline: "btn-outline",
+};
+
+const sizeClasses = {
+  lg: "btn-lg",
+  md: "",
+  sm: "btn-sm",
+  xs: "btn-xs",
+};
+
+const classes = [
+  "btn rounded-full font-normal normal-case border-0", // Base daisyUI btn class + overrides for specific look
+  variantClasses[variant] || "",
+  size ? sizeClasses[size] : "",
+  wide ? "btn-wide" : "",
+  className,
+]
+  .filter(Boolean)
+  .join(" ");
+
+const Tag = href ? "a" : "button";
+---
+
+<Tag href={href} class={classes} {...rest}>
+  <slot />
+</Tag>

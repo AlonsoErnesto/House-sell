@@ -1,0 +1,76 @@
+{
+  "initialMessage": "welcome",
+  "messages": {
+    "welcome": {
+      "text": "¡Hola! 👋 Soy el asistente virtual de una propiedad en venta en Ciudad de Dios – Yura. ¿Qué te gustaría saber?",
+      "buttons": [
+        { "label": "📍 Ubicación", "nextMessage": "location" },
+        { "label": "📐 Área y servicios", "nextMessage": "details" },
+        { "label": "✨ Ventajas", "nextMessage": "advantages" },
+        { "label": "💰 Precio y visitas", "nextMessage": "price" }
+      ]
+    },
+
+    "location": {
+      "text": "La propiedad está ubicada en Ciudad de Dios, Km 16 de la Carretera Yura, Arequipa. A solo 2 cuadras de la vía principal, en una zona urbana con alto movimiento comercial.",
+      "buttons": [
+        { "label": "Ver ventajas", "nextMessage": "advantages" },
+        { "label": "Área y servicios", "nextMessage": "details" },
+        { "label": "Precio y visitas", "nextMessage": "price" },
+        { "label": "Volver al inicio", "nextMessage": "welcome" }
+      ]
+    },
+
+    "details": {
+      "text": "Área total: 200 m² (10 × 20 aprox.). Cuenta con servicios de agua, luz y desagüe. Acceso rápido a vías principales y documentos en regla, lista para transferencia.",
+      "buttons": [
+        { "label": "¿Tiene construcción?", "nextMessage": "construction" },
+        { "label": "Ventajas principales", "nextMessage": "advantages" },
+        { "label": "Precio y visitas", "nextMessage": "price" },
+        { "label": "Volver al inicio", "nextMessage": "welcome" }
+      ]
+    },
+
+    "construction": {
+      "text": "La propiedad es urbana y cuenta con una base sólida para desarrollar. Es ideal para vivienda, ampliación o inversión futura.",
+      "buttons": [
+        { "label": "Ventajas de inversión", "nextMessage": "advantages" },
+        { "label": "Precio y visitas", "nextMessage": "price" },
+        { "label": "Volver", "nextMessage": "details" }
+      ]
+    },
+
+    "advantages": {
+      "text": "Zona urbana en crecimiento y alta demanda. Rodeada de comercios, mercado local, colegios y transporte público. Ubicación que conserva y aumenta su valor.",
+      "buttons": [
+        { "label": "¿Es buena inversión?", "nextMessage": "investment" },
+        { "label": "Área y servicios", "nextMessage": "details" },
+        { "label": "Precio y visitas", "nextMessage": "price" },
+        { "label": "Volver al inicio", "nextMessage": "welcome" }
+      ]
+    },
+
+    "investment": {
+      "text": "Es una excelente oportunidad de inversión por su entorno consolidado, servicios activos y comercio constante. Este tipo de propiedades no suele permanecer mucho tiempo disponible.",
+      "buttons": [
+        { "label": "Precio y visitas", "nextMessage": "price" },
+        { "label": "Volver", "nextMessage": "advantages" }
+      ]
+    },
+
+    "price": {
+      "text": "El precio, fotos adicionales y coordinación de visitas se brindan únicamente a interesados reales.",
+      "buttons": [
+        { "label": "📲 Contactar por WhatsApp", "nextMessage": "contact" },
+        { "label": "Volver al inicio", "nextMessage": "welcome" }
+      ]
+    },
+
+    "contact": {
+      "text": "📞 Contactos (solo interesados):\n👉 958 701 472\n👉 994 733 967\n👉 927 184 608\n\nEscríbenos por WhatsApp para recibir precio, fotos adicionales y coordinar una visita.",
+      "buttons": [
+        { "label": "Volver al inicio", "nextMessage": "welcome" }
+      ]
+    }
+  }
+}

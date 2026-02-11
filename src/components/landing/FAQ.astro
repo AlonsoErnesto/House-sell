@@ -1,0 +1,183 @@
+---
+const questions = [
+  {
+    question: "¿Dónde se encuentra el inmueble?",
+    answer:
+      "Ubicado en Ciudad de Dios, Km 16, Yura. A solo 3 cuadras de la Panamericana, con acceso a transporte, comercio y el Municipio.",
+  },
+  {
+    question: "¿La documentación está saneada?",
+    answer:
+      "Sí, cuenta con Título de Propiedad inscrito en Registros Públicos (Sunarp). La venta es directa y segura mediante notaría.",
+  },
+  {
+    question: "¿Tiene construcción el terreno?",
+    answer:
+      "Sí, cuenta con un módulo de vivienda (cuarto) de material noble listo para habitar. El terreno está cercado y es plano.",
+  },
+  {
+    question: "¿Cuenta con baño?",
+    answer:
+      "El módulo cuenta con instalación de agua y desagüe lista para conectar. Al tener 200m², tienes la libertad de diseñar y construir los baños y acabados a tu gusto.",
+  },
+  {
+    question: "¿El precio es negociable?",
+    answer:
+      "El precio base es de $130,000. Estamos abiertos a escuchar ofertas serias de compradores directos.",
+  },
+];
+---
+
+<section
+  id="preguntas"
+  class="py-24 bg-white relative min-h-screen flex flex-col justify-center"
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24">
+      <!-- Left Column: Header -->
+      <div class="lg:col-span-5">
+        <h2
+          class="text-4xl md:text-5xl font-bold text-slate-900 tracking-tight leading-tight mb-6"
+        >
+          Preguntas frecuentes
+        </h2>
+        <p class="text-slate-500 text-lg font-light leading-relaxed">
+          Nuestra sección de Preguntas Frecuentes proporciona respuestas claras
+          a consultas comunes, garantizando una experiencia fluida e informada.
+        </p>
+      </div>
+
+      <!-- Right Column: Accordion -->
+      <div class="lg:col-span-7 flex flex-col gap-4">
+        {
+          questions.map((item, index) => (
+            <div class="border-b border-slate-200 last:border-0">
+              <button
+                class="w-full flex justify-between items-center py-6 text-left focus:outline-none group cursor-pointer faq-button"
+                aria-expanded="false"
+                aria-controls={`faq-answer-${index}`}
+              >
+                <span class="text-xl font-medium text-slate-800 group-hover:text-emerald-600 transition-colors">
+                  {item.question}
+                </span>
+                <span class="ml-6 flex-shrink-0 text-slate-400 group-hover:text-emerald-600 transition-colors">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="2"
+                    stroke="currentColor"
+                    class="w-6 h-6 transform transition-transform duration-300 ease-in-out icon-plus"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M12 4.5v15m7.5-7.5h-15"
+                    />
+                  </svg>
+                </span>
+              </button>
+              <div
+                id={`faq-answer-${index}`}
+                class="overflow-hidden transition-all duration-300 ease-in-out max-h-0 opacity-0 faq-answer"
+              >
+                <div class="pb-6 text-slate-600 leading-relaxed font-light">
+                  {item.answer}
+                </div>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  @keyframes bounce-in-up {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    60% {
+      opacity: 1;
+      transform: translateY(-5px);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+
+  section {
+    animation: bounce-in-up 1s ease-out forwards;
+  }
+</style>
+
+<script>
+  function setupFAQ() {
+    const buttons = document.querySelectorAll(".faq-button");
+
+    buttons.forEach((button) => {
+      // Remove old listeners to prevent duplication if re-run
+      const newButton = button.cloneNode(true);
+      button.parentNode?.replaceChild(newButton, button);
+    });
+
+    const newButtons = document.querySelectorAll(".faq-button");
+
+    newButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const isExpanded = button.getAttribute("aria-expanded") === "true";
+        const answerId = button.getAttribute("aria-controls");
+        if (!answerId) return;
+        const answer = document.getElementById(answerId);
+        const icon = button.querySelector(".icon-plus");
+
+        if (!answer) return;
+
+        // Toggle current item
+        button.setAttribute("aria-expanded", String(!isExpanded));
+
+        if (!isExpanded) {
+          answer.style.maxHeight = answer.scrollHeight + "px";
+          answer.style.opacity = "1";
+          if (icon) icon.classList.add("rotate-45");
+        } else {
+          answer.style.maxHeight = "0";
+          answer.style.opacity = "0";
+          if (icon) icon.classList.remove("rotate-45");
+        }
+
+        // Close other items
+        newButtons.forEach((otherButton) => {
+          if (otherButton !== button) {
+            const otherIsExpanded =
+              otherButton.getAttribute("aria-expanded") === "true";
+            if (otherIsExpanded) {
+              otherButton.setAttribute("aria-expanded", "false");
+              const otherAnswerId = otherButton.getAttribute("aria-controls");
+              if (!otherAnswerId) return;
+
+              const otherAnswer = document.getElementById(otherAnswerId);
+              const otherIcon = otherButton.querySelector(".icon-plus");
+
+              if (otherAnswer) {
+                otherAnswer.style.maxHeight = "0";
+                otherAnswer.style.opacity = "0";
+              }
+              if (otherIcon) {
+                otherIcon.classList.remove("rotate-45");
+              }
+            }
+          }
+        });
+      });
+    });
+  }
+
+  // Run on load
+  setupFAQ();
+
+  // Run on view transitions
+  document.addEventListener("astro:page-load", setupFAQ);
+</script>

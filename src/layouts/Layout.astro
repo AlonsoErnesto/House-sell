@@ -1,0 +1,45 @@
+---
+import { ClientRouter } from "astro:transitions";
+import "../styles/global.css";
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const {
+  title,
+  description = "Venta de propiedades exclusivas con la mejor experiencia.",
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="es" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={description} />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- Google Fonts: Outfit for modern, premium look -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <title>{title}</title>
+    <ClientRouter />
+  </head>
+  <body
+    class="bg-slate-900 text-white selection:bg-indigo-500 selection:text-white"
+  >
+    <slot />
+  </body>
+</html>
+
+<style is:global>
+  /* Global specific styles if needed beyond tailwind */
+</style>

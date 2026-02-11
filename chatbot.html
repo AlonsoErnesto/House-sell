@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Botón flotante */
+        .chat-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
+        }
+
+        .chat-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+        }
+
+        .chat-button svg {
+            width: 30px;
+            height: 30px;
+            fill: white;
+        }
+
+        /* Contenedor del chat */
+        .chat-container {
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            width: 380px;
+            height: 550px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 1001;
+            animation: slideUp 0.3s ease;
+        }
+
+        .chat-container.active {
+            display: flex;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Header del chat */
+        .chat-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-header h3 {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .close-chat {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background 0.3s ease;
+        }
+
+        .close-chat:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Área de mensajes */
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background: #f8f9fa;
+        }
+
+        .chat-messages::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .chat-messages::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 3px;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        /* Mensaje del bot */
+        .message {
+            margin-bottom: 15px;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message.bot .message-content {
+            background: white;
+            color: #333;
+            padding: 12px 16px;
+            border-radius: 18px;
+            display: inline-block;
+            max-width: 80%;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+            line-height: 1.5;
+            white-space: pre-line;
+        }
+
+        /* Mensaje del usuario */
+        .message.user {
+            text-align: right;
+        }
+
+        .message.user .message-content {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 16px;
+            border-radius: 18px;
+            display: inline-block;
+            max-width: 80%;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Botones de opciones */
+        .chat-buttons {
+            padding: 15px 20px;
+            background: white;
+            border-top: 1px solid #e0e0e0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .option-button {
+            background: white;
+            border: 2px solid #667eea;
+            color: #667eea;
+            padding: 12px 16px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .option-button:hover {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(102, 126, 234, 0.3);
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .chat-container {
+                width: calc(100vw - 40px);
+                height: calc(100vh - 140px);
+                bottom: 90px;
+                right: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Botón flotante -->
+    <button class="chat-button" id="chatButton">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/>
+        </svg>
+    </button>
+
+    <!-- Contenedor del chat -->
+    <div class="chat-container" id="chatContainer">
+        <div class="chat-header">
+            <h3>Asistente Virtual</h3>
+            <button class="close-chat" id="closeChat">&times;</button>
+        </div>
+        <div class="chat-messages" id="chatMessages"></div>
+        <div class="chat-buttons" id="chatButtons"></div>
+    </div>
+
+    <script>
+        class Chatbot {
+            constructor() {
+                this.flowData = null;
+                this.currentMessage = null;
+                this.chatHistory = [];
+                
+                this.chatButton = document.getElementById('chatButton');
+                this.chatContainer = document.getElementById('chatContainer');
+                this.closeChat = document.getElementById('closeChat');
+                this.chatMessages = document.getElementById('chatMessages');
+                this.chatButtons = document.getElementById('chatButtons');
+
+                this.init();
+            }
+
+            async init() {
+                // Cargar el flujo del bot
+                await this.loadBotFlow();
+                
+                // Cargar historial del localStorage
+                this.loadChatHistory();
+                
+                // Event listeners
+                this.chatButton.addEventListener('click', () => this.toggleChat());
+                this.closeChat.addEventListener('click', () => this.toggleChat());
+
+                // Si hay historial, restaurarlo; si no, mostrar mensaje inicial
+                if (this.chatHistory.length === 0) {
+                    this.showMessage(this.flowData.initialMessage);
+                } else {
+                    this.restoreChatHistory();
+                }
+            }
+
+            async loadBotFlow() {
+                try {
+                    const response = await fetch('bot-flow.json');
+                    this.flowData = await response.json();
+                } catch (error) {
+                    console.error('Error cargando el flujo del bot:', error);
+                    this.flowData = {
+                        initialMessage: 'error',
+                        messages: {
+                            error: {
+                                text: 'Error al cargar el chatbot. Por favor, recarga la página.',
+                                buttons: []
+                            }
+                        }
+                    };
+                }
+            }
+
+            loadChatHistory() {
+                const saved = localStorage.getItem('chatHistory');
+                if (saved) {
+                    this.chatHistory = JSON.parse(saved);
+                }
+            }
+
+            saveChatHistory() {
+                localStorage.setItem('chatHistory', JSON.stringify(this.chatHistory));
+            }
+
+            restoreChatHistory() {
+                this.chatHistory.forEach(item => {
+                    if (item.type === 'bot') {
+                        this.addBotMessage(item.text);
+                    } else if (item.type === 'user') {
+                        this.addUserMessage(item.text);
+                    }
+                });
+
+                // Mostrar los botones del último mensaje
+                if (this.chatHistory.length > 0) {
+                    const lastMessage = this.chatHistory[this.chatHistory.length - 1];
+                    if (lastMessage.type === 'bot' && lastMessage.messageId) {
+                        this.currentMessage = lastMessage.messageId;
+                        this.showButtons(this.currentMessage);
+                    }
+                }
+            }
+
+            toggleChat() {
+                this.chatContainer.classList.toggle('active');
+                
+                if (this.chatContainer.classList.contains('active')) {
+                    // Scroll al final cuando se abre
+                    setTimeout(() => {
+                        this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
+                    }, 100);
+                }
+            }
+
+            showMessage(messageId) {
+                const message = this.flowData.messages[messageId];
+                if (!message) return;
+
+                this.currentMessage = messageId;
+                this.addBotMessage(message.text);
+                
+                // Guardar en historial
+                this.chatHistory.push({
+                    type: 'bot',
+                    text: message.text,
+                    messageId: messageId,
+                    timestamp: new Date().toISOString()
+                });
+                this.saveChatHistory();
+
+                this.showButtons(messageId);
+                this.scrollToBottom();
+            }
+
+            addBotMessage(text) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'message bot';
+                messageDiv.innerHTML = `<div class="message-content">${text}</div>`;
+                this.chatMessages.appendChild(messageDiv);
+            }
+
+            addUserMessage(text) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'message user';
+                messageDiv.innerHTML = `<div class="message-content">${text}</div>`;
+                this.chatMessages.appendChild(messageDiv);
+            }
+
+            showButtons(messageId) {
+                const message = this.flowData.messages[messageId];
+                if (!message || !message.buttons) return;
+
+                // Limpiar botones anteriores
+                this.chatButtons.innerHTML = '';
+
+                // Crear nuevos botones
+                message.buttons.forEach(button => {
+                    const buttonElement = document.createElement('button');
+                    buttonElement.className = 'option-button';
+                    buttonElement.textContent = button.label;
+                    buttonElement.addEventListener('click', () => {
+                        this.handleButtonClick(button.label, button.nextMessage);
+                    });
+                    this.chatButtons.appendChild(buttonElement);
+                });
+            }
+
+            handleButtonClick(label, nextMessage) {
+                // Agregar respuesta del usuario
+                this.addUserMessage(label);
+                
+                // Guardar en historial
+                this.chatHistory.push({
+                    type: 'user',
+                    text: label,
+                    timestamp: new Date().toISOString()
+                });
+                this.saveChatHistory();
+
+                this.scrollToBottom();
+
+                // Pequeño delay para simular tiempo de respuesta
+                setTimeout(() => {
+                    this.showMessage(nextMessage);
+                }, 300);
+            }
+
+            scrollToBottom() {
+                setTimeout(() => {
+                    this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
+                }, 100);
+            }
+
+            clearHistory() {
+                this.chatHistory = [];
+                localStorage.removeItem('chatHistory');
+                this.chatMessages.innerHTML = '';
+                this.showMessage(this.flowData.initialMessage);
+            }
+        }
+
+        // Inicializar el chatbot cuando el DOM esté listo
+        document.addEventListener('DOMContentLoaded', () => {
+            const chatbot = new Chatbot();
+            
+            // Exponer método para limpiar historial (opcional)
+            window.clearChatHistory = () => chatbot.clearHistory();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,482 @@
+---
+import Button from "../ui/Button.astro";
+
+const links = [
+  { text: "Inicio", href: "#inicio" },
+  { text: "Inmueble", href: "#inmueble" },
+  { text: "Galería", href: "#galeria" },
+  { text: "Información", href: "#informacion" },
+  { text: "Preguntas", href: "#preguntas" },
+  { text: "Contáctanos", href: "#contactanos" },
+];
+---
+
+<div
+  class="navbar fixed top-0 w-full z-50 text-white transition-all duration-300 px-2 sm:px-4 lg:px-6 py-2 sm:py-3"
+  id="main-header"
+>
+  <div class="navbar-start">
+    <div class="dropdown">
+      <div
+        tabindex="0"
+        role="button"
+        class="btn btn-ghost lg:hidden min-h-0 h-auto p-2"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-6 w-6 sm:h-7 sm:w-7"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          ><path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 6h16M4 12h8m-8 6h16"></path></svg
+        >
+      </div>
+      <ul
+        tabindex="0"
+        class="menu menu-sm dropdown-content mt-3 z-[1] p-3 shadow bg-base-100/90 backdrop-blur-md rounded-box w-56 text-slate-900"
+        style="font-size: clamp(0.9rem, 2vw, 1rem);"
+      >
+        {
+          links.map((link) => (
+            <li class="mb-1">
+              <a
+                href={link.href}
+                class="py-2.5 px-4 rounded-lg hover:bg-slate-100"
+              >
+                {link.text}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+    <a
+      href="/"
+      class="btn btn-ghost font-bold flex gap-1.5 sm:gap-2 items-center min-h-0 h-auto py-2 px-2 sm:px-3"
+      style="font-size: clamp(1.25rem, 4vw, 2.25rem);"
+    >
+      <!-- Logo Icon Placeholder -->
+      <svg
+        class="w-5 h-5 sm:w-7 sm:h-7 lg:w-8 lg:h-8"
+        fill="currentColor"
+        viewBox="0 0 20 20"
+        ><path
+          d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"
+        ></path></svg
+      >
+      EnVenta
+    </a>
+  </div>
+
+  <div class="navbar-center hidden lg:flex">
+    <ul class="menu menu-horizontal px-1 gap-1 relative">
+      <!-- Container for nav items -->
+      <div
+        class="flex items-center bg-white/10 backdrop-blur-md rounded-full px-1.5 py-1.5 border border-white/5 relative"
+      >
+        <!-- Sliding Backdrop -->
+        <div
+          id="nav-backdrop"
+          class="absolute bg-white rounded-full transition-all duration-300 ease-out opacity-0"
+          style="height: calc(100% - 12px); top: 6px; z-index: 0;"
+        >
+        </div>
+
+        {
+          links.map((link) => (
+            <li class="z-10 relative">
+              <a
+                href={link.href}
+                class="nav-link text-white/90 hover:text-white px-4 lg:px-5 py-2 rounded-full transition-colors font-medium text-sm lg:text-base min-h-0 h-auto"
+                data-target={link.href.substring(1)}
+              >
+                {link.text}
+              </a>
+            </li>
+          ))
+        }
+      </div>
+    </ul>
+  </div>
+
+  <div class="navbar-end">
+    <button
+      id="contact-btn"
+      class="bg-white text-slate-900 hover:bg-white/90 border-none rounded-full font-semibold min-h-0 h-auto py-2 sm:py-2.5 px-4 sm:px-5 lg:px-6 cursor-pointer transition-colors"
+      style="font-size: clamp(0.875rem, 1.5vw, 1.125rem);"
+    >
+      Contactar
+    </button>
+  </div>
+</div>
+
+<!-- Contact Modal -->
+<div id="contact-modal" class="modal-overlay hidden">
+  <div class="modal-content">
+    <button id="close-modal" class="close-btn" aria-label="Cerrar">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+
+    <h2 class="modal-title">Contáctenos</h2>
+    <p class="modal-description">
+      Contáctenos para recibir más información vía WhatsApp o llamada
+    </p>
+
+    <div class="contact-list">
+      <a
+        href="https://wa.me/51958701472?text=Hola%2C%0AMe%20interesa%20su%20inmueble%20ubicado%20en%20Yura%2C%20Ciudad%20de%20Dios.%0A%C2%BFPodr%C3%ADa%20llamarle%20o%20agendar%20una%20llamada%3F"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="contact-item"
+      >
+        <span class="phone-number">Sr. Ernesto <br /> 958 701 472</span>
+        <svg class="whatsapp-icon" viewBox="0 0 24 24" fill="currentColor">
+          <path
+            d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"
+          ></path>
+        </svg>
+      </a>
+
+      <a
+        href="https://wa.me/51994733967?text=Hola%2C%0AMe%20interesa%20su%20inmueble%20ubicado%20en%20Yura%2C%20Ciudad%20de%20Dios.%0A%C2%BFPodr%C3%ADa%20llamarle%20o%20agendar%20una%20llamada%3F"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="contact-item"
+      >
+        <span class="phone-number">Sra. Daniela <br /> 994 733 967</span>
+        <svg class="whatsapp-icon" viewBox="0 0 24 24" fill="currentColor">
+          <path
+            d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"
+          ></path>
+        </svg>
+      </a>
+
+      <a
+        href="https://wa.me/51927184608?text=Hola%2C%0AMe%20interesa%20su%20inmueble%20ubicado%20en%20Yura%2C%20Ciudad%20de%20Dios.%0A%C2%BFPodr%C3%ADa%20llamarle%20o%20agendar%20una%20llamada%3F"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="contact-item"
+      >
+        <span class="phone-number">Sr. Alejandro <br /> 927 184 608</span>
+        <svg class="whatsapp-icon" viewBox="0 0 24 24" fill="currentColor">
+          <path
+            d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"
+          ></path>
+        </svg>
+      </a>
+    </div>
+
+    <div class="modal-footer">Solo interesados</div>
+  </div>
+</div>
+
+<style>
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    padding: 1rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .modal-overlay.show {
+    opacity: 1;
+  }
+
+  .modal-overlay.hidden {
+    display: none;
+  }
+
+  .modal-content {
+    background: white;
+    border-radius: 1.5rem;
+    padding: 2.5rem 2rem;
+    max-width: 500px;
+    width: 100%;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    transform: scale(0.7);
+    transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  }
+
+  .modal-overlay.show .modal-content {
+    animation: bounceIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    transform: scale(1);
+  }
+
+  @keyframes bounceIn {
+    0% {
+      transform: scale(0.3);
+      opacity: 0;
+    }
+    50% {
+      transform: scale(1.05);
+    }
+    70% {
+      transform: scale(0.9);
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  .close-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: #64748b;
+    transition: color 0.2s;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .close-btn:hover {
+    color: #334155;
+  }
+
+  .modal-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 0.75rem;
+    text-align: center;
+  }
+
+  .modal-description {
+    color: #475569;
+    font-size: 1rem;
+    text-align: center;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+  }
+
+  .contact-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .contact-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
+    padding: 1rem 1.5rem;
+    border-radius: 1rem;
+    text-decoration: none;
+    transition:
+      transform 0.2s,
+      box-shadow 0.2s;
+    box-shadow: 0 4px 12px rgba(37, 211, 102, 0.2);
+  }
+
+  .contact-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(37, 211, 102, 0.3);
+  }
+
+  .phone-number {
+    color: white;
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+
+  .whatsapp-icon {
+    width: 32px;
+    height: 32px;
+    color: white;
+  }
+
+  .modal-footer {
+    text-align: center;
+    color: #64748b;
+    font-size: 0.875rem;
+    opacity: 0.7;
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e2e8f0;
+  }
+
+  @media (max-width: 640px) {
+    .modal-content {
+      padding: 2rem 1.5rem;
+    }
+
+    .modal-title {
+      font-size: 1.5rem;
+    }
+
+    .modal-description {
+      font-size: 0.9rem;
+    }
+
+    .phone-number {
+      font-size: 1.1rem;
+    }
+
+    .whatsapp-icon {
+      width: 28px;
+      height: 28px;
+    }
+  }
+</style>
+
+<script>
+  const header = document.getElementById("main-header");
+  const backdrop = document.getElementById("nav-backdrop");
+  const navLinks = document.querySelectorAll(
+    ".nav-link",
+  ) as NodeListOf<HTMLElement>;
+  const sections = document.querySelectorAll("section[id]");
+
+  // Update header background on scroll
+  window.addEventListener("scroll", () => {
+    if (window.scrollY > 50) {
+      header?.classList.add("bg-slate-900/50", "backdrop-blur-md");
+    } else {
+      header?.classList.remove("bg-slate-900/50", "backdrop-blur-md");
+    }
+  });
+
+  function updateBackdrop(activeLink: HTMLElement) {
+    if (!backdrop || !activeLink) return;
+
+    const parentRect =
+      activeLink.parentElement?.parentElement?.getBoundingClientRect();
+    const linkRect = activeLink.getBoundingClientRect();
+
+    if (parentRect) {
+      backdrop.style.width = `${linkRect.width}px`;
+      backdrop.style.left = `${linkRect.left - parentRect.left}px`;
+      backdrop.style.opacity = "1";
+    }
+
+    // Update text colors
+    navLinks.forEach((link) => {
+      if (link === activeLink) {
+        link.classList.remove("text-white/90", "hover:text-white");
+        link.classList.add("text-slate-900");
+      } else {
+        link.classList.add("text-white/90", "hover:text-white");
+        link.classList.remove("text-slate-900");
+      }
+    });
+  }
+
+  // Click handler
+  navLinks.forEach((link) => {
+    link.addEventListener("click", (e) => {
+      updateBackdrop(link);
+    });
+  });
+
+  // Intersection Observer for scroll tracking
+  const observerOptions = {
+    root: null,
+    rootMargin: "-50% 0px -50% 0px", // Middle of screen
+    threshold: 0,
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        const activeLink = document.querySelector(
+          `.nav-link[data-target="${id}"]`,
+        ) as HTMLElement;
+        if (activeLink) {
+          updateBackdrop(activeLink);
+        }
+      }
+    });
+  }, observerOptions);
+
+  sections.forEach((section) => {
+    observer.observe(section);
+  });
+
+  // Initial update
+  const initialActive = document.querySelector(
+    '.nav-link[data-target="inicio"]',
+  ) as HTMLElement;
+  if (initialActive) updateBackdrop(initialActive);
+
+  // Modal functionality
+  const contactBtn = document.getElementById("contact-btn");
+  const modal = document.getElementById("contact-modal");
+  const closeBtn = document.getElementById("close-modal");
+
+  function openModal() {
+    if (modal) {
+      modal.classList.remove("hidden");
+      // Trigger reflow to ensure animation plays
+      void modal.offsetWidth;
+      modal.classList.add("show");
+      document.body.style.overflow = "hidden";
+    }
+  }
+
+  function closeModal() {
+    if (modal) {
+      modal.classList.remove("show");
+      setTimeout(() => {
+        modal.classList.add("hidden");
+        document.body.style.overflow = "";
+      }, 300);
+    }
+  }
+
+  contactBtn?.addEventListener("click", (e) => {
+    e.preventDefault();
+    openModal();
+  });
+
+  closeBtn?.addEventListener("click", closeModal);
+
+  // Close modal when clicking outside
+  modal?.addEventListener("click", (e) => {
+    if (e.target === modal) {
+      closeModal();
+    }
+  });
+
+  // Close modal with Escape key
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && modal?.classList.contains("show")) {
+      closeModal();
+    }
+  });
+</script>

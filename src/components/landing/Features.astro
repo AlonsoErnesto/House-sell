@@ -1,0 +1,83 @@
+---
+const features = [
+  {
+    title: "Título de propiedad inscrito en SUNARP",
+    description:
+      "Documentación totalmente saneada y registrada. La propiedad está lista para una transferencia inmediata, sin riesgos legales ni trámites pendientes.",
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" /></svg>`,
+  },
+  {
+    title: "Libre de deudas, cargas y litigios",
+    description:
+      "Sin hipotecas, arbitrios pendientes ni conflictos legales. Una compra limpia que evita retrasos y costos inesperados.",
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 21v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21m0 0h4.5V3.545M12.75 21h7.5V10.75M2.25 21h1.5m18 0h1.5M2.25 9l4.5-1.636M18.75 3l-1.5.545m0 6.205 3 1m1.5.5-1.5-.5M6.75 7.364V3h-3v18m3-13.636 10.5-3.819" /></svg>`,
+  },
+  {
+    title: "Zona con proyección de valorización",
+    description:
+      "Ubicada en un área con crecimiento sostenido. Ideal tanto para vivienda como para inversión a mediano y largo plazo.",
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>`,
+  },
+];
+---
+
+<section
+  id="inmueble"
+  class="py-24 bg-white text-slate-900 relative min-h-screen flex flex-col justify-center"
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-20 animate-fade-in-up">
+      <h2
+        class="text-4xl md:text-5xl font-bold mb-6 text-slate-900 tracking-tight"
+      >
+        Una compra segura, clara y con futuro
+      </h2>
+      <p
+        class="text-slate-500 text-xl max-w-2xl mx-auto font-light leading-relaxed"
+      >
+        Todo lo que un comprador responsable necesita saber antes de dar el
+        siguiente paso. Sin letras pequeñas, sin sorpresas.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8">
+      {
+        features.map((feature, index) => (
+          <div class="flex flex-col items-start p-6 hover:bg-slate-50 rounded-2xl transition-all duration-300 group cursor-pointer hover:-translate-y-1">
+            <div class="mb-6 text-slate-800 group-hover:text-emerald-600 transition-colors duration-300">
+              <div class="w-12 h-12 flex items-center justify-center rounded-xl bg-gray-50 group-hover:bg-emerald-50 transition-colors duration-300">
+                <div set:html={feature.icon} />
+              </div>
+            </div>
+            <h3 class="text-2xl font-semibold mb-3 text-slate-900 group-hover:text-emerald-700 transition-colors">
+              {feature.title}
+            </h3>
+            <p class="text-slate-500 leading-relaxed font-light text-base">
+              {feature.description}
+            </p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  @keyframes bounce-in-up {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    60% {
+      opacity: 1;
+      transform: translateY(-5px);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fade-in-up {
+    animation: bounce-in-up 1s ease-out forwards;
+  }
+</style>
