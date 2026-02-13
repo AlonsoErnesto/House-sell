@@ -33,6 +33,7 @@
 
     <a
       href="#contact"
+      id="cta-contact-btn"
       class="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-white transition-all duration-300 bg-emerald-600 rounded-full hover:bg-emerald-700 hover:scale-105 shadow-lg hover:shadow-emerald-500/30 group"
     >
       Contáctanos
@@ -52,6 +53,14 @@
     </a>
   </div>
 </section>
+
+<script>
+  const ctaBtn = document.getElementById("cta-contact-btn");
+  ctaBtn?.addEventListener("click", (e) => {
+    e.preventDefault();
+    document.dispatchEvent(new CustomEvent("open-contact-modal"));
+  });
+</script>
 
 <style>
   @keyframes bounce-in-up {

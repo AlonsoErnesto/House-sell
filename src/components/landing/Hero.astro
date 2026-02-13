@@ -1,7 +1,4 @@
-<section
-  id="inicio"
-  class="hero min-h-screen relative font-sans flex items-center"
->
+<section id="inicio" class="hero min-h-screen relative font-sans">
   <!-- Background Image with Overlay -->
   <div class="absolute inset-0">
     <img
@@ -13,7 +10,7 @@
     <div class="absolute inset-0 bg-slate-900/20"></div>
   </div>
   <div
-    class="hero-content text-center text-neutral-content z-10 w-full flex-col pt-20"
+    class="hero-content text-center text-neutral-content z-10 w-full flex-col pt-50"
   >
     <div class="max-w-3xl animate-fade-in-up">
       <h1
@@ -31,26 +28,32 @@
       </p>
     </div>
 
-    <div class="navbar-end mt-8">
-      <button
-        id="hero-contact-btn"
-        class="btn bg-emerald-600 hover:bg-emerald-700 text-white border-none rounded-full font-bold px-8 py-3 text-lg shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1"
+    <div class="w-full flex justify-center mt-8 animate-bounce">
+      <a
+        href="#inmueble"
+        class="btn btn-circle bg-emerald-600 hover:bg-emerald-700 text-white border-none shadow-lg hover:shadow-xl transition-all"
+        aria-label="Ver más detalles"
       >
-        Contactar Ahora
-      </button>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-8 w-8"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+        </svg>
+      </a>
     </div>
   </div>
 
   <!-- Content overlay (houses) in the bottom part of the image, handled by the image itself,
        but if we needed to overlay content we would do it here -->
 </section>
-
-<script>
-  const heroBtn = document.getElementById("hero-contact-btn");
-  heroBtn?.addEventListener("click", () => {
-    document.dispatchEvent(new CustomEvent("open-contact-modal"));
-  });
-</script>
 
 <style>
   @keyframes fade-in-up {

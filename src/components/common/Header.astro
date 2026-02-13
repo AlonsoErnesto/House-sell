@@ -16,47 +16,47 @@ const links = [
   id="main-header"
 >
   <div class="navbar-start">
-    <div class="dropdown">
-      <div
-        tabindex="0"
-        role="button"
-        class="btn btn-ghost lg:hidden min-h-0 h-auto p-2"
+    <!-- Dropdown for Mobile (Replaced with custom overlay trigger) -->
+    <div class="lg:hidden">
+      <button
+        id="mobile-menu-btn"
+        class="btn btn-ghost btn-circle text-white hover:bg-white/10 relative z-50"
+        aria-label="Abrir menú"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          class="h-6 w-6 sm:h-7 sm:w-7"
+          class="h-6 w-6 sm:h-7 sm:w-7 transition-transform duration-300"
+          id="menu-icon"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
-          ><path
+        >
+          <path
             stroke-linecap="round"
             stroke-linejoin="round"
             stroke-width="2"
-            d="M4 6h16M4 12h8m-8 6h16"></path></svg
+            d="M4 6h16M4 12h8m-8 6h16"></path>
+        </svg>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-6 w-6 sm:h-7 sm:w-7 hidden transition-transform duration-300"
+          id="close-icon"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
         >
-      </div>
-      <ul
-        tabindex="0"
-        class="menu menu-sm dropdown-content mt-3 z-[1] p-3 shadow bg-base-100/90 backdrop-blur-md rounded-box w-56 text-slate-900"
-        style="font-size: clamp(0.9rem, 2vw, 1rem);"
-      >
-        {
-          links.map((link) => (
-            <li class="mb-1">
-              <a
-                href={link.href}
-                class="py-2.5 px-4 rounded-lg hover:bg-slate-100"
-              >
-                {link.text}
-              </a>
-            </li>
-          ))
-        }
-      </ul>
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
     </div>
+
     <a
       href="/"
-      class="btn btn-ghost font-bold flex gap-1.5 sm:gap-2 items-center min-h-0 h-auto py-2 px-2 sm:px-3"
+      class="btn btn-ghost font-bold flex gap-1.5 sm:gap-2 items-center min-h-0 h-auto py-2 px-2 sm:px-3 text-white hover:bg-white/10"
       style="font-size: clamp(1.25rem, 4vw, 2.25rem);"
     >
       <!-- Logo Icon Placeholder -->
@@ -70,6 +70,29 @@ const links = [
       >
       EnVenta
     </a>
+  </div>
+
+  <!-- Mobile Menu Overlay -->
+  <div
+    id="mobile-menu-overlay"
+    class="fixed inset-0 bg-slate-900/95 backdrop-blur-md z-40 transform translate-x-full transition-transform duration-300 ease-in-out lg:hidden flex flex-col items-center justify-center"
+    style="top: 0; height: 100vh;"
+  >
+    <ul class="menu w-full max-w-xs p-0 gap-0 text-center">
+      {
+        links.map((link) => (
+          <li>
+            <a
+              href={link.href}
+              class="mobile-nav-link text-4xl font-light text-white/80 hover:text-emerald-400 hover:bg-transparent justify-center transition-colors duration-300 py-4 block"
+              data-target={link.href.substring(1)}
+            >
+              {link.text}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
   </div>
 
   <div class="navbar-center hidden lg:flex">
@@ -398,7 +421,7 @@ const links = [
 
   // Click handler
   navLinks.forEach((link) => {
-    link.addEventListener("click", (e) => {
+    link.addEventListener("click", () => {
       updateBackdrop(link);
     });
   });
@@ -478,5 +501,42 @@ const links = [
     if (e.key === "Escape" && modal?.classList.contains("show")) {
       closeModal();
     }
+  });
+
+  // Listen for custom event to open modal from other components
+  document.addEventListener("open-contact-modal", () => {
+    openModal();
+  });
+  // Mobile Menu Logic
+  const mobileMenuBtn = document.getElementById("mobile-menu-btn");
+  const mobileMenuOverlay = document.getElementById("mobile-menu-overlay");
+  const menuIcon = document.getElementById("menu-icon");
+  const closeIcon = document.getElementById("close-icon");
+  const mobileLinks = document.querySelectorAll(".mobile-nav-link");
+
+  function toggleMobileMenu() {
+    const isClosed = mobileMenuOverlay?.classList.contains("translate-x-full");
+
+    if (isClosed) {
+      // Open
+      mobileMenuOverlay?.classList.remove("translate-x-full");
+      menuIcon?.classList.add("hidden");
+      closeIcon?.classList.remove("hidden");
+      document.body.style.overflow = "hidden"; // Prevent scrolling
+    } else {
+      // Close
+      mobileMenuOverlay?.classList.add("translate-x-full");
+      menuIcon?.classList.remove("hidden");
+      closeIcon?.classList.add("hidden");
+      document.body.style.overflow = "";
+    }
+  }
+
+  mobileMenuBtn?.addEventListener("click", toggleMobileMenu);
+
+  mobileLinks.forEach((link) => {
+    link.addEventListener("click", () => {
+      toggleMobileMenu();
+    });
   });
 </script>
