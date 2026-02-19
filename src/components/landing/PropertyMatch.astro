@@ -72,7 +72,12 @@
         >
           <div class="flex flex-col gap-2">
             <div>
-              <h3 class="text-3xl font-bold text-white mb-1">$130,000</h3>
+              <!-- Discount Badge -->
+              <div class="flex items-center gap-2 mb-2">
+                <span class="discount-badge"> 🏷️ -12% OFF </span>
+                <span class="text-white/60 text-sm line-through">$130,000</span>
+              </div>
+              <h3 class="text-3xl font-bold text-white mb-1">$115,000</h3>
               <p class="text-white/90 text-lg">Ciudad de Dios</p>
               <p class="text-white/80 text-sm">Km 16, Yura</p>
             </div>
@@ -263,6 +268,35 @@
 </script>
 
 <style>
+  .discount-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: linear-gradient(135deg, #ff4d4d, #ff8c00);
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    padding: 3px 10px;
+    border-radius: 999px;
+    box-shadow: 0 0 12px rgba(255, 100, 0, 0.6);
+    animation: badge-pulse 2s ease-in-out infinite;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  @keyframes badge-pulse {
+    0%,
+    100% {
+      box-shadow: 0 0 10px rgba(255, 100, 0, 0.5);
+      transform: scale(1);
+    }
+    50% {
+      box-shadow: 0 0 20px rgba(255, 100, 0, 0.9);
+      transform: scale(1.05);
+    }
+  }
+
   @keyframes heartbeat {
     0% {
       transform: scale(1);
